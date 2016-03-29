@@ -1,8 +1,9 @@
 public class Solve {
 	String expression, operator = "", holdOperator = "", logStr = "";
 	StringBuffer expBuff;
+	String[] numStr, opStr;
 	double num = 0, holdNum = 0, runningAnswer = 0, prevAnswer = 0;	
-	int passCalc = 0;
+	int passCalc = 0;	
 	
 	public void getNegatives()
 	{	
@@ -50,17 +51,17 @@ public class Solve {
 				}
 			}
 		}
-		getNum();
+		getArrays();
 	}
 	
-	public void getNum()
+	public void getArrays()
 	{
 		int index = 0;
 		passCalc = 0;
 		expression = expBuff.toString();
 		
-		String[] numStr = expression.split( "-|\\+|\\*|/|\\^" ),
-		         opStr = new String[ numStr.length - 1 ];
+		numStr = expression.split( "-|\\+|\\*|/|\\^" );
+		opStr = new String[ numStr.length - 1 ];
 		
 		for (int v = 0; v < numStr.length; v++) {
 			if ( numStr[v].charAt(0) == '$') {
@@ -87,7 +88,6 @@ public class Solve {
 				}
 			}
 		}
-		
 		for (int m = 0; m < expression.length(); m++) {
 		   if ( expression.charAt( m ) == '+' ) {
 		      opStr[ index ] = "+";
@@ -110,6 +110,11 @@ public class Solve {
 		      index++;
 		   }
 		}
+		sortArrays();
+	}
+	
+	public void sortArrays()
+	{
 		
 		ModForExponents modex = new ModForExponents();
 		ModPrimaryOperators mpe = new ModPrimaryOperators();
@@ -138,7 +143,11 @@ public class Solve {
 		}
 		System.out.println("\n");
 		//------------------------------//*/
-		
+		solveArrays();
+	}
+	
+	public void solveArrays()
+	{
 		for ( int i = 0; i < numStr.length; i++ ) {
 		   if ( passCalc == 0 ) {
 			  if ( numStr[i] == "n" ) {
