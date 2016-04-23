@@ -28,8 +28,11 @@ public class Calculator {
 	c.insets = new Insets( 2, 2, 2, 2 );
 	c.gridheight = 1;	
 	sComponents.panel1.add( sComponents.power, c );	
-
 	c.gridy++;
+	
+	sComponents.panel1.add(sComponents.sin, c);
+	c.gridy++;
+	
 	sComponents.panel1.add( sComponents.one, c );
 	c.gridy++;
 
@@ -51,6 +54,9 @@ public class Calculator {
 	sComponents.panel1.add( sComponents.log, c );
 	c.gridy++;
 	
+	sComponents.panel1.add( sComponents.cos, c );
+	c.gridy++;
+	
 	sComponents.panel1.add( sComponents.two, c );
 	c.gridy++;
 
@@ -65,6 +71,9 @@ public class Calculator {
 	
 	c.gridy = 1;
 	sComponents.panel1.add( sComponents.del, c );
+	c.gridy++;
+	
+	sComponents.panel1.add( sComponents.tan, c );
 	c.gridy++;
 
 	sComponents.panel1.add( sComponents.three, c );
@@ -86,6 +95,9 @@ public class Calculator {
 	c.gridy = 1;
 	c.gridwidth = 1;
 	sComponents.panel1.add( sComponents.clr, c );
+	c.gridy++;
+	
+	sComponents.panel1.add( sComponents.pars, c );
 	c.gridy++;
 
 	sComponents.panel1.add( sComponents.plus, c );
