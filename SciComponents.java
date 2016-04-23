@@ -2,16 +2,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 public class SciComponents extends JFrame {
 	JTabbedPane tPane;
 	JPanel panel1;
 	JButton zero, one, two, three, four, five, six, seven, eight, nine, plus, minus, 
-    divide, multiply, clr, del, calc, point, pi, power, log, ans, pars, more;
+    divide, multiply, clr, del, calc, point, pi, power, log, ans, sin, cos, tan, pars;
 	JTextArea inputArea;
 	JScrollPane scroll;
     DecimalFormat df = new DecimalFormat("0.00");
     Solve s = new Solve();
+    ArrayList<String> parsList = new ArrayList<String>();
 	   	      
 	public SciComponents()
 	{
@@ -150,6 +152,7 @@ public class SciComponents extends JFrame {
 			   s.holdNum = 0;
 			   s.num = 0;
 			   s.runningAnswer = 0;
+			   parsList.clear();
 			}
 		   }
 		);
@@ -197,7 +200,8 @@ public class SciComponents extends JFrame {
 		log.addActionListener (
 		   new ActionListener() {
 			public void actionPerformed( ActionEvent e ) {
-			   inputArea.append( "log" );
+			   inputArea.append( "log(" );
+			   parsList.add("(");
 			}
 		   }
 		);
@@ -213,6 +217,53 @@ public class SciComponents extends JFrame {
 			   s.prevAnswer = s.runningAnswer;
 			}
 		   }
+		);
+		sin = new JButton("SIN");
+		sin.addActionListener(
+				new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						inputArea.append("sin(");
+						parsList.add("(");
+					}
+				}
+		);
+		cos = new JButton("COS");
+		cos.addActionListener(
+				new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						inputArea.append("cos(");
+						parsList.add("(");
+					}
+				}
+		);
+		tan = new JButton("TAN");
+		tan.addActionListener(
+				new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						inputArea.append("tan(");
+						parsList.add("(");
+					}
+				}
+		);
+		pars = new JButton("(   )");
+		pars.addActionListener(
+				new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						int l = parsList.size();
+						if (l != 0 && parsList.get(l-1) == "(") {
+							inputArea.append(")");
+							parsList.add(")");
+						}
+						else if (l != 0 && parsList.get(l-1) == ")") {
+							inputArea.append("(");
+							parsList.add("(");
+						}
+						else {
+							inputArea.append("(");
+							parsList.add("(");
+						}
+					}
+				}
 		);
 		inputArea = new JTextArea();
 		inputArea.setLineWrap( true );
