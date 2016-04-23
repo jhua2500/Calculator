@@ -9,11 +9,12 @@ import java.util.ArrayList;
 public class MyCanvas extends JPanel {
    JButton graph, clrEquation;
    JTextField inputField1, inputField2, inputField3;
-   String equation, eq1, eq2, eq3, tempEq1, tempEq2, tempEq3;
+   String equation, eq1 = "", eq2 = "", eq3 = "", tempEq1, tempEq2, tempEq3;
    StringBuffer equationBuffer;
    DecimalFormat num = new DecimalFormat( "0.00" );
    GetLine g = new GetLine();
    Solve s = new Solve();
+   Axes a = new Axes();
    ArrayList<Double> xList = new ArrayList<Double>();
    ArrayList<Double> yList = new ArrayList<Double>();
    ArrayList<Double> xList1 = new ArrayList<Double>();
@@ -28,7 +29,7 @@ public class MyCanvas extends JPanel {
 	setBorder( BorderFactory.createLoweredBevelBorder() );
 	setBackground( Color.white );
 	setLayout( new BorderLayout() );
-	add( new Axes() );	
+	add(a);	
 
 	inputField1 = new JTextField( 10 );
 	inputField2 = new JTextField( 10 );
@@ -66,6 +67,7 @@ public class MyCanvas extends JPanel {
 		   inputField1.setText( "" ); 
 		   inputField2.setText( "" );
 		   inputField3.setText( "" );
+		   eq1 = ""; eq2 = ""; eq3 = "";
 		   reset();
 		   repaint();
 		}
@@ -73,57 +75,70 @@ public class MyCanvas extends JPanel {
 	);
    }
    
-   public void reset() { xList.clear(); yList.clear(); }
+   public void reset() 
+   { 
+	   xList.clear(); yList.clear(); 
+       xList1.clear(); yList1.clear(); 
+       xList2.clear(); yList2.clear(); 
+       xList3.clear(); yList3.clear(); 
+   }
 
    public void paintComponent( Graphics g )
    {
 	   super.paintComponent( g );
 	   Graphics2D g2 = ( Graphics2D ) g;
-	   int offsetX = getWidth() / 2;
-	   int offsetY = getHeight() / 2;
+	   double xScale = a.getxScale(),
+	          yScale = a.getyScale(),
+	          offsetX = (double)a.getWidth()/2,
+	          offsetY = (double)a.getHeight()/2;
+	   
+	   System.out.println("MyCanvas:"+"\nxScale:"+xScale);
+	   System.out.println("yScale:"+yScale);
+	   System.out.println("offsetX:"+offsetX);
+	   System.out.println("offsetY:"+offsetY+"\n");
 	   
 	   for (int j = 0; j < xList1.size()-1; j++) {
 		   g2.setColor(Color.red);
-		   g2.draw(new Line2D.Double(20*xList1.get(j)+offsetX, -yList1.get(j)*20+offsetY, 
-		   20*xList1.get(j+1)+offsetX, -yList1.get(j+1)*20+offsetY));
+		   g2.draw(new Line2D.Double(xScale*xList1.get(j)+offsetX, -yList1.get(j)*yScale+offsetY, 
+		   xScale*xList1.get(j+1)+offsetX, -yList1.get(j+1)*yScale+offsetY));
 	   }
 	   for (int j = 0; j < xList2.size()-1; j++) {
 		   g2.setColor(Color.blue);
-		   g2.draw(new Line2D.Double(20*xList2.get(j)+offsetX, -yList2.get(j)*20+offsetY, 
-		   20*xList2.get(j+1)+offsetX, -yList2.get(j+1)*20+offsetY));
+		   g2.draw(new Line2D.Double(xScale*xList2.get(j)+offsetX, -yList2.get(j)*yScale+offsetY, 
+		   xScale*xList2.get(j+1)+offsetX, -yList2.get(j+1)*yScale+offsetY));
 	   }		   
 	   for (int j = 0; j < xList3.size()-1; j++) {
 		   g2.setColor(Color.green);
-		   g2.draw(new Line2D.Double(20*xList3.get(j)+offsetX, -yList3.get(j)*20+offsetY, 
-		   20*xList3.get(j+1)+offsetX, -yList3.get(j+1)*20+offsetY));
+		   g2.draw(new Line2D.Double(xScale*xList3.get(j)+offsetX, -yList3.get(j)*yScale+offsetY, 
+		   xScale*xList3.get(j+1)+offsetX, -yList3.get(j+1)*yScale+offsetY));
 	   }
    }
    
    public void graph()
    {
-	   if (eq1 != tempEq1) {
-		   equationBuffer = new StringBuffer(eq1);
-		   reset();
+	   reset();
+	   if (!eq1.equals("")) {
+		   StringBuffer eB1 = new StringBuffer(eq1);
+		   equationBuffer = eB1;
 		   getYs();
 		   xList1 = xList;
 		   yList1 = yList;
-		   tempEq1 = eq1;
 	   }
-	   if (eq2 != tempEq2) {
-		   equationBuffer = new StringBuffer(eq2);
-		   reset();
-		   getYs();
+	   if (!eq2.equals("")) {
+		   StringBuffer eB2 = new StringBuffer(eq2);
+		   equationBuffer = eB2; 
+		   getYs(); 
+		   if (xList1.isEmpty()) System.out.println("empty");
 		   xList2 = xList;
 		   yList2 = yList;
-		   tempEq2 = eq2;
 	   }
-	   if (eq3 != tempEq3) {
-		   equationBuffer = new StringBuffer(eq3);
-		   reset();
+	   if (!eq3.equals("")) {
+		   StringBuffer eB3 = new StringBuffer(eq3);
+		   equationBuffer = eB3;
 		   getYs();
+		   if (xList1.isEmpty()) System.out.println("empty");
 		   xList3 = xList;
 		   yList3 = yList;
-		   tempEq3 = eq3;
 	   }
 	   repaint();
    }
