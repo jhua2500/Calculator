@@ -1,116 +1,56 @@
+import java.util.ArrayList;
+
 public class ModPrimaryOperators {
-	String[] newNumArray, newOpArray;
-	int loop = 1;
+	int i = 0, indexOfMultiply = -1, indexOfDivide = -1;
 	
-	public void modify(String[] nArray, String[] oArray ) 
+	public int compare(int m, int d)
+	{
+		if (m < d)
+			return m;
+		else
+			return d;
+	}
+
+	public void modify(ArrayList<String> nList, ArrayList<String> oList) 
 	{
 		String operator = "";
 		double x = 0, y = 0;
-		for(int i = 0; i <= oArray.length; i++) {
-			if(i == oArray.length) {
-				if(loop == 1) {
-					loop++;
-					modify(nArray, oArray);
-				}
-				else {
-					newNumArray = nArray;
-					newOpArray = oArray;
-					return;
-				}
+		
+		while (oList.contains("*") || oList.contains("/")) {
+			indexOfMultiply = oList.indexOf("*");
+			indexOfDivide = oList.indexOf("/");
+			
+			if (indexOfMultiply == -1 && indexOfDivide != -1) {
+				i = indexOfDivide;
+				operator = oList.get(i);
 			}
-			else {
-			    operator = oArray[i];
-			    try {
-			    	x = Double.parseDouble(nArray[i]);
-			    }
-			    catch(NumberFormatException e) {
-			    	if(loop == 1) {
-						loop++;
-						modify(nArray, oArray);
-					}
-					else {
-						newNumArray = nArray;
-						newOpArray = oArray;
-						return;
-					}
-			    }			   
-			    try {
-			    	y = Double.parseDouble(nArray[i+1]);
-			    }
-			    catch(NumberFormatException e) {
-			    	if(loop == 1) {
-						loop++;
-						modify(nArray, oArray);
-					}
-					else {
-						newNumArray = nArray;
-						newOpArray = oArray;
-						return;
-					}
-			    }
+			else if (indexOfDivide == -1 && indexOfMultiply != -1) {
+				i = indexOfMultiply;
+				operator = oList.get(i);
+			}
+			else if (indexOfDivide != -1 && indexOfMultiply != -1){
+				i = compare(indexOfMultiply, indexOfDivide);
+				operator = oList.get(i);
 			}			
+			x = Double.parseDouble(nList.get(i));
+			y = Double.parseDouble(nList.get(i+1));				
 			switch(operator) {
-				case "*": 
-					nArray[i] = Double.toString(x * y);
-					for (int p = i; p < oArray.length; p++) {
-						if(p == oArray.length - 1) {
-							oArray[p] = "n";
-							break;
-						}
-						else if(p == oArray.length - 2) {
-						    oArray[p] = oArray[p + 1];
-						    oArray[p + 1] = "n";
-						    break;
-					    }
-					    else {
-						    oArray[p] = oArray[p + 1];
-						    oArray[p + 1] = oArray[p + 2];
-					    }
-				    }
-				    for (int a = i; a < nArray.length - 1; a++) {
-					    if(a == nArray.length - 2) {
-						    nArray[a + 1] = "n";
-					        break;
-					    }
-					    else {
-						    nArray[a + 1] = nArray[a + 2]; 
-					    }
-				    }
-		            break;
+				case "*":					
+					nList.set(i, Double.toString(x * y));
+					nList.remove(i+1);
+					oList.remove(i);
+					break;
 				case "/": 
-					nArray[i] = Double.toString(x / y);
-					for (int p = i; p < oArray.length; p++) {
-						if(p == oArray.length - 1) {
-							oArray[p] = "n";
-						    break;
-					    }
-					    else if(p == oArray.length - 2) {
-						    oArray[p] = oArray[p + 1];
-						    oArray[p + 1] = "n";
-						    break;
-					    }
-					    else {
-						    oArray[p] = oArray[p + 1];
-						    oArray[p + 1] = oArray[p + 2];
-					    }
-				    }
-				    for (int a = i; a < nArray.length - 1; a++) {
-					    if(a == nArray.length - 2) {
-						    nArray[a + 1] = "n";
-					        break;
-					    }
-					    else {
-					  	    nArray[a + 1] = nArray[a + 2]; 
-					    }
-				    }
+					nList.set(i, Double.toString(x / y));
+					nList.remove(i+1);
+					oList.remove(i);
 		            break;
-				case "n": 
-					break; 
 				default: 
 					break;
 			}
 		}
-	}
+		return;
+	}	
 }
 
 
