@@ -56,14 +56,6 @@ public class Axes extends JPanel {
 		   pass++;
 		   return lines(x);
 	   }
-	   else if (pass == 4) {
-		   w = x;
-		   x /= 2;
-		   for (int j = 0; j < 8; j++) 
-			   list.add(x+j*w);
-		   pass++;
-		   return lines(x);
-	   }
 	   pass = 1;
 	   return list; 
    }
