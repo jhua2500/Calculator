@@ -11,7 +11,7 @@ public class SciComponents extends JFrame {
     divide, multiply, clr, del, calc, point, pi, power, log, ans, sin, cos, tan, pars;
 	JTextArea inputArea;
 	JScrollPane scroll;
-    DecimalFormat df = new DecimalFormat("0.00");
+    DecimalFormat df = new DecimalFormat("0.00000");
     Solve s = new Solve();
     ArrayList<String> parsList = new ArrayList<String>();
 	   	      
@@ -21,7 +21,6 @@ public class SciComponents extends JFrame {
 		tPane = new JTabbedPane();
 		add( tPane );
 		setVisible( true );
-		pack();
 		setDefaultCloseOperation( EXIT_ON_CLOSE );
 		setSize( 500, 500 );
 		setResizable( true );
@@ -152,6 +151,8 @@ public class SciComponents extends JFrame {
 			   s.holdNum = 0;
 			   s.num = 0;
 			   s.runningAnswer = 0;
+			   s.numList.clear();
+			   s.opList.clear();
 			   parsList.clear();
 			}
 		   }
@@ -211,7 +212,13 @@ public class SciComponents extends JFrame {
 			public void actionPerformed( ActionEvent e ) {
 			   String equation = inputArea.getText(); 
 			   s.expBuff = new StringBuffer(equation);
-			   s.getNegatives();
+			   
+			   while (s.expBuff.indexOf("(") != -1) {
+				   new Parentheses(s.expBuff);
+			   }
+			   
+			   //return new buff
+			   s.execute();
 			   String answer = df.format(s.runningAnswer);
 			   inputArea.append( "\n" + answer );
 			   s.prevAnswer = s.runningAnswer;
